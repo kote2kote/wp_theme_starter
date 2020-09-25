@@ -87,8 +87,8 @@ a {
   // height: 100vh;
   color: #fff;
   position: fixed;
-  top:50%;
-  left:50%;
+  top: 50%;
+
   // transform: translateX(-50%);
   > .inner {
     position: relative;
@@ -96,10 +96,11 @@ a {
     .outer {
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
+      transform: translate(-100%, -50%);
+      margin-left: 100vw;
       width: 5rem;
       background: rgba(0, 0, 0, 0.7);
-      height: 5rem;
+      height: 100vh;
 
       .inner {
         position: relative;
@@ -112,7 +113,8 @@ a {
         .line {
           position: absolute;
           top: calc(50% + -1px);
-          background: #000;
+          right: 0;
+          background: #fff;
           height: 1px;
           width: 100vw;
         }
@@ -121,6 +123,10 @@ a {
   }
 }
 
-// ==================================================
-// 
-// ==================================================
+// ===================================================
+// header
+// ===================================================
+
+.aside__outer {
+  width: 254px;
+}

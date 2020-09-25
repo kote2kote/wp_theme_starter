@@ -14,55 +14,73 @@
 
 get_header();
 ?>
+<div class="contents__outer">
+	<div class="contents__inner flex">
 
+	<aside class="aside__outer">
+		<div class="aside__inner">
+			<?php get_sidebar(); ?>
+		</div>
+	</aside>
+	<!-- /.aside__outer -->
+
+	<main class="main__outer w-full">
+		<div class="main__inner">
+		<?php
+
+if ( have_posts() ) :
+	?>
+	<h2 class="text-3xl text-red-500">index.phpだす - type: <?php echo get_post_type();?></h2>
+	<?php
+	//投稿ページかつフロントページではない
+	//http://www.arttoe.net/19
+	if ( is_home() && ! is_front_page() ) :
+		?>
+		<header>
+			<h1 class="text-3xl text-red-500"><?php single_post_title(); ?></h1>
+		</header>
+		<?php
+	endif;
+
+	/* Start the Loop */
+	while ( have_posts() ) ://投稿がある場合
+		the_post();//次の投稿へ進める
+
+		/*
+		 * Include the Post-Type-specific template for the content.
+		 * If you want to override this in a child theme, then include a file
+		 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
+		 * 投稿タイプを取得してコンテンツのテンプレートに渡している
+		 */
+		//
+		//以下テンプレートを使う
+		get_template_part( 'template-parts/content/content', get_post_type() );// => post()
+		
+
+	endwhile;//ここまでエントリーコンテントの繰り返し
+
+	//次のページ表示。「投稿ナビゲーション」というタイトルが勝手に入る display:noneなど使って消せる
+	the_posts_navigation();
+	echo 'or';
+	the_posts_navigation( array( 'prev_text' => '前へ', 'next_text' => '次へ' ) );
+
+else ://投稿がない場合
+
+	get_template_part( 'template-parts/content/content', 'none' );
+	
+endif;
+?>
+		</div>
+	</main>
+	<!-- /.main__outer -->
+	</div>
+</div>
+<!-- /.contents__outer -->
 
 
 
  
-<?php
 
-		if ( have_posts() ) :
-			?>
-			<h2 class="text-3xl text-red-500 mt-12">index.phpだす - type: <?php echo get_post_type();?></h2>
-			<?php
-			//投稿ページかつフロントページではない
-			//http://www.arttoe.net/19
-			if ( is_home() && ! is_front_page() ) :
-				?>
-				<header>
-					<h1 class="text-3xl text-red-500"><?php single_post_title(); ?></h1>
-				</header>
-				<?php
-			endif;
-
-			/* Start the Loop */
-			while ( have_posts() ) ://投稿がある場合
-				the_post();//次の投稿へ進める
-
-				/*
-				 * Include the Post-Type-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
-				 * 投稿タイプを取得してコンテンツのテンプレートに渡している
-				 */
-				//
-				//以下テンプレートを使う
-				get_template_part( 'template-parts/content/content', get_post_type() );// => post()
-				
-
-			endwhile;//ここまでエントリーコンテントの繰り返し
-
-			//次のページ表示。「投稿ナビゲーション」というタイトルが勝手に入る display:noneなど使って消せる
-			the_posts_navigation();
-			echo 'or';
-			the_posts_navigation( array( 'prev_text' => '前へ', 'next_text' => '次へ' ) );
-
-		else ://投稿がない場合
-
-			get_template_part( 'template-parts/content/content', 'none' );
-			
-		endif;
-		?>
 		
 		
 <?php

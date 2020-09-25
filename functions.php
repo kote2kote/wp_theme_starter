@@ -96,11 +96,56 @@ if ( ! function_exists( 'theme_starter_setup' ) ) :
 			'flex-width'  => true,
 			'flex-height' => true,
 		) );
+
 	}
 endif;
 
 add_action( 'after_setup_theme', 'theme_starter_setup' );
 
+// ==================================================
+// スラッグ名が日本語だったら自動的に投稿タイプ＋id付与へ変更（スラッグを設定した場合は適用しない）
+// ==================================================
+function auto_post_slug( $slug, $post_ID, $post_status, $post_type ) {
+if ( preg_match( '/(%[0-9a-f]{2})+/', $slug ) ) {
+		$slug = utf8_uri_encode( $post_type ) . '-' . $post_ID;
+}
+return $slug;
+}
+add_filter( 'wp_unique_post_slug', 'auto_post_slug', 10, 4  );
+
+// ==================================================
+// 投稿一覧に「サムネイル」「ID」「スラッグ」「文字数」の4項目を追加
+// ==================================================
+function add_posts_columns( $columns ) {
+  $columns['thumbnail'] = 'サムネイル';
+  $columns['postid'] = 'ID';
+  $columns['slug'] = 'スラッグ';
+  $columns['count'] = '文字数';
+
+  echo '<style type="text/css">
+  .fixed .column-thumbnail {width: 120px;}
+  .fixed .column-postid {width: 2%;}
+  .fixed .column-slug, .fixed .column-count {width: 5%;}
+  </style>';
+
+  return $columns;
+}
+function custom_posts_column( $column_name, $post_id ) {
+  if ( $column_name == 'thumbnail' ) {
+    $thumb = get_the_post_thumbnail( $post_id, array( 100, 100 ), 'thumbnail' );
+    echo ( $thumb ) ? $thumb : '－';
+  } elseif ( $column_name == 'postid' ) {
+    echo $post_id;
+  } elseif ( $column_name == 'slug' ) {
+    $slug = get_post( $post_id ) -> post_name;
+    echo $slug;
+  } elseif ( $column_name == 'count' ) {
+    $count = mb_strlen( strip_tags( get_post_field( 'post_content', $post_id ) ) );
+    echo $count;
+  }
+}
+add_filter( 'manage_posts_columns', 'add_posts_columns' );
+add_action( 'manage_posts_custom_column', 'custom_posts_column', 10, 2 );
 
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.

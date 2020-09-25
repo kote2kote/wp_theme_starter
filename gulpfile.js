@@ -211,15 +211,15 @@ function startAppServer() {
 
   // watch("./**/*.html", html);
   watch('./**/*.php', php);
-  watch('./assets/src/scss/*.scss', styles);
-  watch('./assets/src/js/*.js', scripts);
-  watch('./assets/src/images/*.js', optimizeImages);
+  watch('./assets/src/scss/**/*.scss', styles);
+  watch('./assets/src/js/**/*.js', scripts);
+  watch('./assets/src/images/**', optimizeImages);
   watch([
     // "./**/*.html",
     './**/*.php',
-    './assets/src/scss/*.scss',
-    './assets/src/js/*.js',
-    './assets/src/images/*.js',
+    './assets/src/scss/**/*.scss',
+    './assets/src/js/**/*.js',
+    './assets/src/images/**',
     //  ]).on('change', server.reload);
   ]).on('change', reload);
 }
