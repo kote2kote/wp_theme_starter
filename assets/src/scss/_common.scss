@@ -82,6 +82,12 @@ a {
   }
 }
 
+.debug__js {
+  li > span {
+    @apply text-green-400 font-bold;
+  }
+}
+
 .rulers__outer {
   // width: 100vw;
   // height: 100vh;

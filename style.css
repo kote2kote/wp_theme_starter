@@ -21401,6 +21401,13 @@ a:hover {
   border: #ffd700 2px solid;
 }
 
+.debug__js li > span {
+  --text-opacity: 1;
+  color: #68d391;
+  color: rgba(104, 211, 145, var(--text-opacity));
+  font-weight: 700;
+}
+
 .rulers__outer {
   color: #fff;
   position: fixed;
